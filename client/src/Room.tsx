@@ -121,6 +121,7 @@ export const Room: React.FC = React.memo(() => {
   const history = useHistory();
   const { roomUUID } = useParams<{ roomUUID: string }>();
   const [msg, setMsg] = useState('');
+  const inputRef = useRef<HTMLInputElement>();
 
   const { memberCount, msgList, sendMsg } = useSocketRoom(roomUUID);
 
@@ -131,6 +132,7 @@ export const Room: React.FC = React.memo(() => {
     }
     sendMsg(name, msg);
     setMsg('');
+    inputRef.current.focus();
     console.log('发送消息', msg);
   }, [name, msg, setMsg, sendMsg]);
 
@@ -161,6 +163,7 @@ export const Room: React.FC = React.memo(() => {
       </div>
       <div className={classes.msgInput}>
         <TextField
+          inputRef={inputRef}
           className={classes.msgInputText}
           value={msg}
           onChange={(e) => setMsg(e.target.value)}

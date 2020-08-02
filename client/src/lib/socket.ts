@@ -6,9 +6,10 @@ const platformSocketParam = {
 
 const host =
   process.env.NODE_ENV === 'production' ? location.host : '127.0.0.1:9100';
+const protocol = location.protocol === 'https:' ? 'wss' : 'ws';
 
 export class API {
-  serverUrl = `ws://${host}`;
+  serverUrl = `${protocol}://${host}`;
   socket: typeof Socket;
   handleEventError: any;
   roomUUID: string;

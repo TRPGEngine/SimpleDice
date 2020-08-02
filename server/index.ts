@@ -49,7 +49,8 @@ io.on('connection', (socket) => {
 });
 
 app.use((req, res) => {
-  res.redirect('/');
+  // 404全转index.html
+  res.sendFile(path.resolve(publicDir, 'index.html'));
 });
 
 const port = 9100;
