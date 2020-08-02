@@ -80,16 +80,39 @@ const RoomTitle: React.FC<{
 });
 RoomTitle.displayName = 'RoomTitle';
 
-const MsgItem: React.FC<{ senderName: string; msg: string }> = React.memo(
-  (props) => {
+const MsgItem: React.FC<{
+  senderName: string;
+  msg: string;
+  type?: string;
+}> = React.memo((props) => {
+  const { senderName, msg, type } = props;
+
+  if (type === 'system') {
     return (
-      <div>
-        <div style={{ fontWeight: 'bold' }}>{props.senderName}:</div>
-        <div>{props.msg}</div>
+      <div style={{ textAlign: 'center' }}>
+        <div
+          style={{
+            margin: 'auto',
+            color: 'white',
+            backgroundColor: '#c1c1c1',
+            display: 'inline-block',
+            padding: '2px 4px',
+            borderRadius: 3,
+          }}
+        >
+          {props.msg}
+        </div>
       </div>
     );
   }
-);
+
+  return (
+    <div>
+      <div style={{ fontWeight: 'bold' }}>{props.senderName}:</div>
+      <div>{props.msg}</div>
+    </div>
+  );
+});
 MsgItem.displayName = 'MsgItem';
 
 export const Room: React.FC = React.memo(() => {
@@ -128,7 +151,12 @@ export const Room: React.FC = React.memo(() => {
       <RoomTitle memberCount={memberCount} roomUUID={roomUUID} />
       <div ref={msgListRef} className={classes.msgList}>
         {msgList.map((item, i) => (
-          <MsgItem key={i} senderName={item.senderName} msg={item.msg} />
+          <MsgItem
+            key={i}
+            senderName={item.senderName}
+            msg={item.msg}
+            type={item.type}
+          />
         ))}
       </div>
       <div className={classes.msgInput}>

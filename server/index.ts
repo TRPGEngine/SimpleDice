@@ -1,4 +1,5 @@
 import IO from 'socket.io';
+import { processDiceCommand } from './dice';
 const app = require('express')();
 const http = require('http').createServer(app);
 const io = IO(http);
@@ -24,6 +25,14 @@ io.on('connection', (socket) => {
   socket.on('sendMsg', (roomUUID: string, senderName: string, msg: string) => {
     console.log(`${socket.id}(${senderName}) 在房间 [${roomUUID}]: ${msg}`);
     io.to(roomUUID).emit('sendMsg', { senderName, msg });
+
+    processDiceCommand(msg, (diceRes) => {
+      io.to(roomUUID).emit('sendMsg', {
+        senderName: '系统',
+        msg: senderName + ' 发起投骰: ' + diceRes,
+        type: 'system',
+      });
+    });
   });
 
   socket.on('disconnecting', () => {

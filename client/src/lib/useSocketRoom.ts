@@ -5,6 +5,7 @@ import { useList } from 'react-use';
 interface MsgItem {
   senderName: string;
   msg: string;
+  type?: string;
 }
 export function useSocketRoom(roomUUID: string) {
   const apiRef = useRef<API>();
@@ -20,10 +21,11 @@ export function useSocketRoom(roomUUID: string) {
       setMemberCount(count);
     });
 
-    api.socket.on('sendMsg', ({ senderName, msg }) => {
+    api.socket.on('sendMsg', ({ senderName, msg, type }) => {
       pushMsg({
         senderName,
         msg,
+        type,
       });
     });
 
