@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "parcel index.html",
+    "build": "parcel build --out-dir ../server/public index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "moonrailgun",

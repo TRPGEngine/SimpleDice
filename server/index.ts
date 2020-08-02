@@ -1,11 +1,17 @@
 import IO from 'socket.io';
 import { processDiceCommand } from './dice';
-const app = require('express')();
+import express from 'express';
+import path from 'path';
+
+const app = express();
 const http = require('http').createServer(app);
 const io = IO(http);
 
+const publicDir = path.join(__dirname, 'public');
+app.use(express.static(publicDir));
+
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(path.resolve(publicDir, 'index.html'));
 });
 
 io.on('connection', (socket) => {
@@ -40,6 +46,10 @@ io.on('connection', (socket) => {
       io.to(roomUUID).emit('updateMember', getRoomMemberCount(roomUUID) - 1);
     });
   });
+});
+
+app.use((req, res) => {
+  res.redirect('/');
 });
 
 const port = 9100;
