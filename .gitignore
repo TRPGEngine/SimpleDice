@@ -2,3 +2,4 @@ node_modules
 dist
 .cache
 server/public
+.DS_Store
