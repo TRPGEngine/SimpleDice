@@ -5,8 +5,13 @@ export function processDiceCommand(inputMsg: string, cb: ProcessCallback) {
   if (/^[.。]r/.test(inputMsg)) {
     // 是一个投骰指令
     const restStr = inputMsg.substr(2).trim();
-    const { str } = roll(restStr);
+    try {
+      const { str } = roll(restStr);
 
-    cb(str);
+      cb(str);
+    } catch (err) {
+      console.error(err);
+      cb(`异常的投骰表达式: ${inputMsg}`);
+    }
   }
 }
